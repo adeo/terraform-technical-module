@@ -20,7 +20,7 @@ jobs:
       - name: Semantic Release Config
         run: |
           echo '{
-                   "tagFormat":"${{ matrix.module }}-v${version}",
+                   "tagFormat":"v${version}-${{ matrix.module }}",
                    "plugins": [
                       '@semantic-release/commit-analyzer',
                       '@semantic-release/release-notes-generator',
