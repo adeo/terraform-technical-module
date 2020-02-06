@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: ["technical-module1", "technical-module2"]
+        module: ["technical-module_a", "technical-module_b"]
       max-parallel: 1
     steps:
       - name: Checkout
