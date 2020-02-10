@@ -5,7 +5,7 @@ on:
 
 jobs:
   terraform:
-    name: 'Terraform check format'
+    name: 'TF build (${{ matrix.module }})'
     runs-on: ubuntu-latest
     env:
       TF_VERSION: 0.11.14
