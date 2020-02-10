@@ -5,13 +5,17 @@ on:
 
 jobs:
   terraform:
-    name: 'TF build (${{ matrix.module }})'
+    name: '[${{ matrix.module }}] Terraform pipeline'
     runs-on: ubuntu-latest
     env:
       TF_VERSION: 0.11.14
     strategy:
+      # Avoid to fail all pipelines with one module failed
+      fail-fast: false
       matrix:
-        module: ["technical-module-a", "technical-module-b"]
+        module:
+          - technical-module-a
+          - technical-module-b
     steps:
       - name: 'Checkout'
         uses: actions/checkout@v2
