@@ -18,6 +18,13 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+      - name: terraform-docs
+        uses: Dirrk/terraform-docs@v1.0.6
+        with:
+          tf_docs_working_dir: ${{ matrix.module }}/
+          tf_docs_output_file: README.md
+          tf_docs_git_push: true
+          tf_docs_git_commit_message: "docs: auto generated terraform docs"
       - name: Semantic Release Config
         run: |
           echo '{
