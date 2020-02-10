@@ -4,32 +4,33 @@ on:
   pull_request:
 
 jobs:
-  terraform_fmt:
-    name: 'Terraform fmt'
+  terraform:
+    name: '[${{ matrix.module }}] Terraform pipeline'
     runs-on: ubuntu-latest
+    env:
+      TF_VERSION: 0.11.14
+    strategy:
+      # Avoid to fail all pipelines with one module failed
+      fail-fast: false
+      matrix:
+        module:
+          - technical-module-a
+          - technical-module-b
     steps:
       - name: 'Checkout'
-        uses: actions/checkout@master
+        uses: actions/checkout@v2
       - name: 'Terraform Format'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.11.14
+          tf_actions_version: ${{ env.TF_VERSION }}
+          tf_actions_working_dir: ${{ matrix.module }}
           tf_actions_subcommand: 'fmt'
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  terraform-validate:
-    name: 'Terraform validate'
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        module: ["technical-module1", "technical-module2"]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: 'Terraform Init'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.11.14
+          tf_actions_version: ${{ env.TF_VERSION }}
           tf_actions_subcommand: 'init'
           tf_actions_working_dir: ${{ matrix.module }}
         env:
@@ -37,7 +38,7 @@ jobs:
       - name: 'Terraform Validate'
         uses: hashicorp/terraform-github-actions@master
         with:
-          tf_actions_version: 0.11.14
+          tf_actions_version: ${{ env.TF_VERSION }}
           tf_actions_subcommand: 'validate'
           tf_actions_working_dir: ${{ matrix.module }}
         env:
