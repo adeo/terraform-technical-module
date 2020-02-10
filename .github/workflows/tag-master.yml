@@ -16,7 +16,7 @@ jobs:
       # Could not release two modules at the same time, so run them sequentially
       max-parallel: 1
       matrix:
-        modules:
+        module:
           - technical-module-a
           - technical-module-b
     steps:
