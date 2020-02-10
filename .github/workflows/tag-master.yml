@@ -11,10 +11,14 @@ jobs:
     name: 'release'
     runs-on: ubuntu-latest
     strategy:
-      matrix:
-        - technical-module-a
-        - technical-module-b
+      # Avoid to fail all pipelines with one module failed
+      fail-fast: false
+      # Could not release two modules at the same time, so run them sequentially
       max-parallel: 1
+      matrix:
+        modules:
+          - technical-module-a
+          - technical-module-b
     steps:
       - name: Checkout
         uses: actions/checkout@v2
