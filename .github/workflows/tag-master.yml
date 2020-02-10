@@ -8,7 +8,7 @@ on:
 
 jobs:
   terraform:
-    name: 'release'
+    name: 'Update Docs and Release module'
     runs-on: ubuntu-latest
     strategy:
       # Avoid to fail all pipelines with one module failed

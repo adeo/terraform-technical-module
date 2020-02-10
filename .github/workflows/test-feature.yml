@@ -5,7 +5,7 @@ on:
 
 jobs:
   terraform:
-    name: '[${{ matrix.module }}] Terraform pipeline'
+    name: '[${{ matrix.module }}] Terraform validate module'
     runs-on: ubuntu-latest
     env:
       TF_VERSION: 0.11.14
