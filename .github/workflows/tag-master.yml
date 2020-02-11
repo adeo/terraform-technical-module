@@ -1,4 +1,4 @@
-name: Tag Master Branch
+name: Release modules on Master
 
 on:
   push:
