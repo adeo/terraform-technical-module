@@ -22,9 +22,19 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Fix fast-forwards issue
+        with:
+          # Need to pull complete git history to check if there is changes since last commit for the module #monorepo
+          fetch-depth: 0
+      - name: Gather number of changes since last module commit (in the same branch)
+        run: |
+          export CHANGES_SINCE_LAST_MODULE_TAG=$(git diff --name-only $(git describe --match "${{ matrix.module }}*" --tags --abbrev=0)..@  --abbrev=0 -- ${{ matrix.module }} | wc -l)
+          echo "::set-env name=changes_since_last_module_tag::${CHANGES_SINCE_LAST_MODULE_TAG}"
+      - name: Stop here if there is no changes in module directory since last commit.
+        if: ${{ env.CHANGES_SINCE_LAST_MODULE_TAG }} >= 1
+        # MonoRepo issue, if two modules are released at the same time, fix fast-forwards issue
+      - name: Check if git is up to date with remote
         run: git pull
-      - name: terraform-docs
+      - name: "Update Terraform docs"
         uses: Dirrk/terraform-docs@7353ff3 #v1.0.6
         with:
           tf_docs_working_dir: "${{ matrix.module }}/"
