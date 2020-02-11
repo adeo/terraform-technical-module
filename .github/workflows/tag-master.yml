@@ -33,7 +33,7 @@ jobs:
           echo "::set-env name=changes_since_last_module_tag::${CHANGES_SINCE_LAST_MODULE_TAG}"
       - name: Stop here if there is no changes in module directory since last commit.
         run: echo "There is [${{ env.changes_since_last_module_tag }}] changes since last commit on module [${{ matrix.module }}], go on"
-        if: ${{ env.changes_since_last_module_tag }} >= 1
+        if: "${{ env.changes_since_last_module_tag }} >= 1"
         # MonoRepo issue, if two modules are released at the same time, fix fast-forwards issue
       - name: Check if git is up to date with remote
         run: git pull
