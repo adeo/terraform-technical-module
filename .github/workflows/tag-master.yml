@@ -25,8 +25,9 @@ jobs:
         with:
           # Need to pull complete git history to check if there is changes since last commit for the module #monorepo
           fetch-depth: 0
-      - name: Gather number of changes since last module commit (in the same branch)
+      - name: Fetch all tags and gather number of changes since last module commit (in the same branch)
         run: |
+          git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           export CHANGES_SINCE_LAST_MODULE_TAG=$(git diff --name-only $(git describe --match "${{ matrix.module }}*" --tags --abbrev=0)..@  --abbrev=0 -- ${{ matrix.module }} | wc -l)
           echo "::set-env name=changes_since_last_module_tag::${CHANGES_SINCE_LAST_MODULE_TAG}"
       - name: Stop here if there is no changes in module directory since last commit.
