@@ -29,7 +29,7 @@ jobs:
         run: |
           git fetch --depth=1 origin +refs/tags/*:refs/tags/*
           export CHANGES_SINCE_LAST_MODULE_TAG=$(git diff --name-only $(git describe --match "${{ matrix.module }}*" --tags --abbrev=0)..@  --abbrev=0 -- ${{ matrix.module }} | wc -l)
-          echo "::set-env name=changes_since_last_module_tag::${CHANGES_SINCE_LAST_MODULE_TAG}"
+          echo "::set-env name=changes_since_last_module_tag::${CHANGES_SINCE_LAST_MODULE_TAG:0}"
       - name: Stop here if there is no changes in module directory since last commit.
         run: echo "There is [${{ env.CHANGES_SINCE_LAST_MODULE_TAG }}] changes since last commit on module [${{ matrix.module }}], go on"
         if: ${{ env.CHANGES_SINCE_LAST_MODULE_TAG }} >= 1
