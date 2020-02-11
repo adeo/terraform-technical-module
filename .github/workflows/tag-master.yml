@@ -36,8 +36,10 @@ jobs:
         if: env.changes_since_last_module_tag != '0'
         # MonoRepo issue, if two modules are released at the same time, fix fast-forwards issue
       - name: Check if git is up to date with remote
+        if: env.changes_since_last_module_tag != '0'
         run: git pull
       - name: "Update Terraform docs"
+        if: env.changes_since_last_module_tag != '0'
         uses: Dirrk/terraform-docs@7353ff3 #v1.0.6
         with:
           tf_docs_working_dir: "${{ matrix.module }}/"
@@ -45,6 +47,7 @@ jobs:
           tf_docs_git_push: true
           tf_docs_git_commit_message: "docs: auto generated terraform docs"
       - name: Semantic Release Config
+        if: env.changes_since_last_module_tag != '0'
         run: |
           echo '{
                    "tagFormat":"${{ matrix.module }}-v${version}",
@@ -57,6 +60,7 @@ jobs:
                 }
           '> .releaserc
       - name: Semantic Release
+        if: env.changes_since_last_module_tag != '0'
         uses: cycjimmy/semantic-release-action@v2
         with:
           semantic_version: 17.0.2
